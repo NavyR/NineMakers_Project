@@ -8,21 +8,36 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
         const root = document.getElementById("root");
-        let counter = 0;
-        function countUp() {
-            counter += 1;
-            render();   // Re-Rendering for Update value of "counter"
+
+        function App() {
+            // React.useState() 반환값(?): [undefined, f]
+            // undefined: data
+            // f(): data 값 수정하는 함수 (+ 자동 렌더링)
+            // f() 로 data, 즉 현재 상태를 수정하면 App() 의 모든 component
+            // 들을 rerendering 하고 App() 의 모든 코드를 다시 수행하고 반환함.
+            // 다만 모든 component 를 업데이트하진 않고, 값이 변경된
+            // component 만 업데이트함.
+            const data = React.useState(0); // 0: data 기본값
+            const [counter, setCounter] = data;
+            const onClick = () => {
+                // 주석, 코드 이렇게 두 가지 방법 중 아래의 방법이 더 안전함.
+                // : 변경에 사용하는 값이 확실히 현재 값이라는 것을 보장받기 때문.
+                // => 예상치 못한 업데이트가 일어난다 해도 그것으로 인한 혼동 방지됨.
+                
+                // 직접 값 설정해주기
+                // setCounter(counter + 1);
+
+                // 항상 현재 state 를 얻도록 해주는 함수 전달하기
+                setCounter((current) => current + 1);
+            };
+            
+            return (
+                <div>
+                    <h3>Total clicks: {counter}</h3>
+                    <button onClick={onClick}>Click me</button>
+                </div>
+            );
         }
-        function render() {
-            ReactDOM.render(<Container/>, root);
-        }
-        const Container = () => (   // Function
-            <div>
-                <h3>Total clicks: {counter}</h3>
-                <button onClick={countUp}>Click me</button>
-            </div>
-        );
-        // Rendering Once when load Page => No Update
-        render();
+        ReactDOM.render(<App />, root);        
     </script>
 </html>
