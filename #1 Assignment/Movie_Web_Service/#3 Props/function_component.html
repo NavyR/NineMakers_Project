@@ -8,27 +8,34 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
         // props: first, only argument (Object)
-        function Btn(/* props */{text, big}/* get "text" from Object */) {
-            return <button style={{
-                backgroundColor: "tomato",
-                color: "white",
-                padding: "10px 20px",
-                border: 0,
-                borderRadius: 10,
-                fontSize: big ? 18 : 16,
-            }}
-            >
-                {text} 
-            </button>
+        function Btn(/* props */{text, changeValue}/* get "text" from Object */) {
+            return (
+                <div>
+                    <button
+                        onClick={changeValue}
+                        style={{
+                            backgroundColor: "tomato",
+                            color: "white",
+                            padding: "10px 20px",
+                            border: 0,
+                            borderRadius: 10,
+                        }}
+                    >
+                        {text} 
+                    </button>
+                </div>
             // Btn(props)   {props.text}
             // <=> Btn({text})  {text}
+            );
         }
 
         function App() {
+            const [value, setValue] = React.useState("Save Changes")
+            const changeValue = () => setValue("Revert Changes")
             return (
                 <div>
-                    <Btn text="Save Changes" big={true}/>
-                    <Btn text="Continue" big={false}/>
+                    <Btn text={value} changeValue={changeValue} />
+                    <Btn text="Continue"/>
                 </div>
             );
         }
